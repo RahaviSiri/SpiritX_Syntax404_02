@@ -26,7 +26,7 @@ const App = () => {
         <Route path='/select-team' element={<SelectTeam/>}/>
         <Route path='/myteam' element={<MyTeam/>}/>
         <Route path='/budget' element={<Budget/>}/>
-        <Route path='/leader-board' element={<LeaderBoard/>}/>
+        <Route path='/leaderboard' element={<LeaderBoard/>}/>
         <Route path='/my-profile' element={<MyProfile/>}/>
         <Route path='/category-players' element={<CategoryPlayers/>}/>
         <Route path='/player-details' element={<PlayersDetails/>}/>
