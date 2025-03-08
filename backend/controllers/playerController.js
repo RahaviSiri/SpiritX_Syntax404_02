@@ -128,7 +128,7 @@ const updateHotel = async (req, res) => {
     return res.json({ success: true, message: "Player Updated Successfully", player });
 
   } catch (error) {
-    console.error("Error in update Player:", error);
+    console.error("Error in updates Player:", error);
     return res.status(500).json({ success: false, message: "Server Error" });
   }
 };
