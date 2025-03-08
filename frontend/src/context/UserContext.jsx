@@ -4,14 +4,17 @@ export const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
   const [uToken, setUToken] = useState(localStorage.getItem("uToken") || "");
-  const backendUrl = "http://localhost:4500"
+  const backendURL = "http://localhost:4500"
 
   useEffect(() => {
-    localStorage.setItem("uToken", uToken);
-  }, [uToken]);
+    const token = localStorage.getItem('uToken');
+    if (token) {
+      setUToken(token);
+    }
+  }, []);
 
   return (
-    <UserContext.Provider value={{ uToken, setUToken, backendUrl }}>
+    <UserContext.Provider value={{ uToken, setUToken,backendURL }}>
       {children}
     </UserContext.Provider>
   );

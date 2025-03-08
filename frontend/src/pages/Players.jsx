@@ -1,5 +1,5 @@
 import React from "react";
-import assets from "../Assetes/assets.js"; // Import assets
+import  { assets } from "../assets/assets.js"
 
 const PlayerCard = ({ player }) => {
   return (
