@@ -21,7 +21,7 @@ const App = () => {
     <div>
       <NavBar/>
       <Routes>
-        {/* <Route path='/' element={<Home/>}/> */}
+        <Route path='/' element={<Home/>}/>
         <Route path='/players' element={<Players/>}/>
         <Route path='/select-team' element={<SelectTeam/>}/>
         <Route path='/myteam' element={<MyTeam/>}/>
