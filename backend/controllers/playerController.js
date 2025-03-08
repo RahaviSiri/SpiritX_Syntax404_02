@@ -12,7 +12,8 @@ const addPlayer = async (req, res) => {
       inningsPlayed, 
       wickets, 
       oversBowled, 
-      runsConceded 
+      runsConceded,
+      budget 
     } = req.body;
     
     const imageFile = req.file;
@@ -37,6 +38,7 @@ const addPlayer = async (req, res) => {
       oversBowled,
       runsConceded,
       image: imageUpload.secure_url,
+      budget
     });
 
     await player.save();
@@ -55,5 +57,17 @@ const getPlayers = async (req, res) => {
   }
 };
 
+const getPlayerById = async (req, res) => {
+  try {
+    const { id } = req.params;  
+    const player = await playerModel.findById(id);  
+    if (!player) {
+      return res.status(404).json({ success: false, message: 'Player not found' });
+    }
+    res.status(200).json({ success: true, player });  
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
-export { addPlayer,getPlayers };
+export { addPlayer,getPlayers,getPlayerById };
