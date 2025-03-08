@@ -9,7 +9,10 @@ import LeaderBoard from './pages/LeaderBoard'
 import MyProfile from './components/MyProfile'
 import CategoryPlayers from './components/CategoryPlayers'
 import PlayersDetails from './components/PlayersDetails'
-import PlayerAvailability from './pages/PlayerAvailability'
+import Category from './pages/Category'
+import Batsman from './pages/Batsman'
+import Bowler from './pages/Bowler'
+import All_rounder from './pages/All_rounder'
 
 const App = () => {
   return (
@@ -24,7 +27,10 @@ const App = () => {
         <Route path='/my-profile' element={<MyProfile/>}/>
         <Route path='/category-players' element={<CategoryPlayers/>}/>
         <Route path='/player-details' element={<PlayersDetails/>}/>
-        <Route path='/' element={<PlayerAvailability/>}/>
+        <Route path='/' element={<Category />}></Route>
+        <Route path='/batsman' element={<Batsman />}></Route>
+        <Route path='/bowler' element={<Bowler />}></Route>
+        <Route path='/all-rounder' element={<All_rounder />}></Route>
       </Routes>
     </div>
   )
