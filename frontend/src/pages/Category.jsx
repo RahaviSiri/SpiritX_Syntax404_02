@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import assets from "../assets/assets.js";
 import './Category.css';
+import { useNavigate } from "react-router-dom";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
-
+  const navigate = useNavigate(); 
   useEffect(() => {
     fetch("/api/categories") // Adjust the API endpoint as needed
       .then((res) => res.json())
@@ -43,7 +44,7 @@ const Category = () => {
                 <img
                   src={assets.batsman}
                   alt="Batsman"
-                  className="w-40 h-40 object-contain"
+                  className="w-40 h-40 object-contain rounded-full"
                 />
                 <p className="mt-2 font-medium text-lg">Batsman</p>
               </div>
@@ -63,9 +64,9 @@ const Category = () => {
             <div className="flip-card">
               <div className="flip-card-front w-full h-full flex flex-col justify-center items-center bg-purple-300 rounded-xl shadow-lg p-4">
                 <img
-                  src={assets.batsman}
+                  src={assets.bowler}
                   alt="Bowler"
-                  className="w-40 h-40 object-contain"
+                  className="w-40 h-40 object-contain rounded-full"
                 />
                 <p className="mt-2 font-medium text-lg">Bowler</p>
               </div>
@@ -81,13 +82,13 @@ const Category = () => {
 
         {/* All-rounder Category */}
         <div className="category-card flex flex-col items-center  shadow-lg rounded-xl p-4 w-full h-64 relative group" onClick={() => handleCategoryClick("all-rounder")}>
-          <div className="flip-container w-full h-full">
+          <div className="flip-container w-full h-full rounded-full">
             <div className="flip-card">
-              <div className="flip-card-front w-full h-full flex flex-col justify-center items-center bg-purple-300 rounded-xl shadow-lg p-4">
+              <div className="flip-card-front w-full h-full flex flex-col justify-center items-center bg-purple-300 rounded-xl shadow-lg p-4 ">
                 <img
-                  src={assets.batsman}
+                  src={assets.all_rounder}
                   alt="All-rounder"
-                  className="w-40 h-40 object-contain"
+                  className="w-40 h-40 object-contain rounded-full"
                 />
                 <p className="mt-2 font-medium text-lg">All-rounder</p>
               </div>

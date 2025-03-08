@@ -1,6 +1,6 @@
-import batsman from './batsman.png'
-import bowler from './bowler.png'
-import all_rounder from './all_rounder.png'
+import batsman from './batsman.jpg'
+import bowler from './bowler.jpg'
+import all_rounder from './all_rounder.jpg'
 
 const assets = {
     batsman,
