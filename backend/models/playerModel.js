@@ -11,6 +11,7 @@ const playerSchema = new mongoose.Schema({
     oversBowled: { type: Number, required: true },  
     runsConceded: { type: Number, required: true },
     wickets: { type: Number, required: true },
+    budget: { type: String, required: true },
 });
   
 const playerModel = mongoose.models.player || mongoose.model("player",playerSchema);
