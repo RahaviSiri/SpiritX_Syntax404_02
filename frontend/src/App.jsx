@@ -33,7 +33,7 @@ const App = () => {
         <Route path='/leaderboard' element={<LeaderBoard/>}/>
         <Route path='/my-profile' element={<MyProfile/>}/>
         <Route path='/category-players' element={<CategoryPlayers/>}/>
-        <Route path='/player-details' element={<PlayersDetails/>}/>
+        <Route path='/player-details/:id' element={<PlayersDetails/>}/>
         <Route path='/selectteam' element={<SelectTeam />}></Route>
       </Routes>
       <Footer/>

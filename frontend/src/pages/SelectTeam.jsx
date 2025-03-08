@@ -29,7 +29,7 @@ const SelectTeam = () => {
   };
 
   return (
-    <div className="p-6 min-h-screen bg-gray-100 flex flex-col items-center">
+    <div className="mt-6 p-6 min-h-screen bg-gray-100 flex flex-col items-center">
       <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center">
         Select Your Team
       </h1>
