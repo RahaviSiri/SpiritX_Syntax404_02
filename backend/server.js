@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import playerRouter from "./routers/playerRouter.js";
+import adminRouter from "./routers/adminRouter.js";
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,7 @@ app.get("/", (req,res) => {
     res.json("API working");
 });
 app.use("/api/player", playerRouter);
+app.use("/api/admin", adminRouter);
 
 app.listen(PORT,() => {
     console.log(`Backend is working at port ${PORT}`);

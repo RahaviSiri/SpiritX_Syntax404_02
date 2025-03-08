@@ -15,6 +15,7 @@ const AddPlayer = () => {
     oversBowled: "",
     runsConceded: "",
     image: null,
+    budget:""
   });
 
   const inputHandler = (e) => {
@@ -55,6 +56,7 @@ const AddPlayer = () => {
     formDataToSend.append("wickets", formData.wickets);
     formDataToSend.append("oversBowled", formData.oversBowled);
     formDataToSend.append("runsConceded", formData.runsConceded);
+    formDataToSend.append("budget", formData.budget);
 
     try {
       const { data } = await axios.post("http://localhost:4500/api/player/add", formDataToSend, {
@@ -76,6 +78,7 @@ const AddPlayer = () => {
           oversBowled: "",
           runsConceded: "",
           image: null,
+          budget:""
         });
       }else{
         toast.error(data.message);
@@ -86,7 +89,7 @@ const AddPlayer = () => {
   };
 
   return (
-    <div className="m-4 p-6 bg-white rounded-lg shadow-lg max-w-xl mx-auto w-full md:w-3/4 lg:w-1/2">
+    <div className="m-4 p-6 bg-white rounded-lg shadow-lg max-w-xl w-full">
       <h2 className="text-2xl font-bold text-purple-800 mb-6 text-center">
         Add Player
       </h2>
@@ -134,6 +137,7 @@ const AddPlayer = () => {
           { name: "wickets", placeholder: "Wickets", type: "number" },
           { name: "oversBowled", placeholder: "Overs Bowled", type: "number" },
           { name: "runsConceded", placeholder: "Runs Conceded", type: "number" },
+          { name: "budget", placeholder: "Budget of Player", type: "number" }
         ].map((field) => (
           <input
             key={field.name}
