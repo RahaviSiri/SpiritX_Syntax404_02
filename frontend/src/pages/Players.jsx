@@ -1,79 +1,44 @@
-import React from "react";
-import  { assets } from "../assets/assets.js"
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
+import { toast } from "react-toastify";
+import PlayerCard from '../components/PlayerCard';
 
-const PlayerCard = ({ player }) => {
+const Players = () => {
+  const [players, setPlayers] = useState([]);
+
+  const getPlayers = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:4500/api/player/get-players");
+      if (data.success) {
+        setPlayers(data.players);
+      } else {
+        toast.error("Error getting players");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getPlayers();
+  }, []);
+
   return (
-    <div className="w-70 p-6 bg-[#9535b8] text-white rounded-xl shadow-2xl flex-shrink-0 relative transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-3xl">
-      {/* Role Icon in top-right corner */}
-      <div className="absolute bottom-2 right-2 w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden border-gray-000">
-        <img
-          src={assets[player.role]} // Use role dynamically from player data
-          alt={player.role} // Alt text based on role
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      {/* Player Image */}
-      <div className="flex justify-center mb-4">
-        <img
-          src={assets.athlete} // Use athlete image from assets.js
-          alt={player.name}
-          className="w-58 h-82 rounded-full border-4 border-white object-cover"
-        />
-      </div>
-
-      {/* Player Name */}
-      <h2 className="text-2xl font-bold text-center">{player.name}</h2>
-      <p className="text-center text-lg text-gray-300">{player.University}</p>
-    </div>
-  );
-};
-
-// Sample player data with different universities and roles
-const playerData = [
-  {
-    name: "Danushka Kumara",
-    University: "University of Moratuwa",
-    role: "all", // Ensure this matches the key in assets.js
-  },
-  {
-    name: "Anuradha Perera",
-    University: "University of Colombo",
-    role: "bat", // Ensure this matches the key in assets.js
-  },
-  {
-    name: "Kamal Wickramasinghe",
-    University: "University of Sri Jayewardenepura",
-    role: "ball", // Ensure this matches the key in assets.js
-  },
-  {
-    name: "Nadeesha Priyadarshani",
-    University: "University of Peradeniya",
-    role: "all", // Ensure this matches the key in assets.js
-  },
-];
-
-const PlayerPage = () => {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-150">
+    <div className='m-5'>
       {/* Players List Heading */}
-      <h1 className="text-5xl font-bold text-black mb-9">🏅 Players List</h1>
+      <h1 className="text-2xl font-bold text-purple-800 text-center mb-8 mt-4">🏅 Players List</h1>
       
-      {/* Flex container to display cards side by side */}
-      <div className="flex flex-wrap justify-center gap-8">
-        {/* Render the player cards */}
-        {playerData.map((player, index) => (
-          <PlayerCard key={index} player={player} />
-        ))}
-      </div>
+      {players.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {players.map((item, index) => (
+            <PlayerCard key={index} item={item} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-center">No players available</p>
+      )}
     </div>
   );
 };
 
-export default PlayerPage;
-
-
-
-
-
-
+export default Players;
