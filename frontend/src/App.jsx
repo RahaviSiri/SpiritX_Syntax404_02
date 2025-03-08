@@ -16,6 +16,10 @@ import Login from './components/login';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 const App = () => {
 
   const { uToken } = useContext(UserContext);

@@ -1,4 +1,5 @@
 import playerModel from "../models/playerModel.js";
+
 import {v2 as cloudinary} from "cloudinary"
 
 const addPlayer = async (req, res) => {
@@ -57,6 +58,7 @@ const getPlayers = async (req, res) => {
   }
 };
 
+
 const getPlayerById = async (req, res) => {
   try {
     const { id } = req.params;  
@@ -70,67 +72,3 @@ const getPlayerById = async (req, res) => {
   }
 };
 
-const deletePlayer = async (req,res) => {
-  try {
-    const { id } = req.params; 
-    const player = await playerModel.findByIdAndDelete(id);
-    
-    if (!player) {
-      return res.status(404).json({ success: false, message: "Player not found" });
-    }
-    res.json({ success: true, message: "Player successfully deleted" });
-  } catch (error) {
-    console.error("Error deleting Player:", error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-}
-
-const updateHotel = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { 
-      name, 
-      university, 
-      category, 
-      totalRuns, 
-      ballsFaced, 
-      inningsPlayed, 
-      wickets, 
-      oversBowled, 
-      runsConceded,
-      budget 
-    } = req.body;
-    let updateFields = { name, 
-      university, 
-      category, 
-      totalRuns, 
-      ballsFaced, 
-      inningsPlayed, 
-      wickets, 
-      oversBowled, 
-      runsConceded,
-      budget  };
-
-    // If a new image is uploaded, update it
-    if (req.file) {
-      const imageUpload = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: "image",
-      });
-      updateFields.image = imageUpload.secure_url;
-    }
-
-    const player = await playerModel.findByIdAndUpdate(id, updateFields, { new: true });
-
-    if (!player) {
-      return res.status(404).json({ success: false, message: "Player not found" });
-    }
-
-    return res.json({ success: true, message: "Player Updated Successfully", player });
-
-  } catch (error) {
-    console.error("Error in update Player:", error);
-    return res.status(500).json({ success: false, message: "Server Error" });
-  }
-};
-
-export { addPlayer,getPlayers,getPlayerById, deletePlayer,updateHotel };

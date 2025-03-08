@@ -1,59 +1,79 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import playerImage from "../assets/Player1.jpg"; // Adjust path if needed
+import { toast } from "react-toastify";
 
 const CategoryPlayers = ({ userId }) => {
-  const [players, setPlayers] = useState([]);
-  const [team, setTeam] = useState([]);
+  const [teamCount, setTeamCount] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [counter, setCounter] = useState(0);
   const maxPlayers = 11;
 
-  const hardcodedPlayers = Array(6).fill(null).map((_, index) => ({
-    _id: `manual-player-id-${index}`,
-    name: `John Doe ${index + 1}`,
-    university: "XYZ University",
-    budget: 5000 + index * 1000,
-    picture: playerImage,
-  }));
+  // Hardcoded Players
+  const [players, setPlayers] = useState(
+    Array(6).fill(null).map((_, index) => ({
+      _id: `manual-player-id-${index}`,
+      name: `John Doe ${index + 1}`,
+      university: "XYZ University",
+      budget: 5000 + index * 1000,
+      picture: playerImage,
+      state: "Add", // Initial state for each player is "Add"
+    }))
+  );
 
+  const handleButtonClick = (playerId) => {
+    setPlayers(prevPlayers =>
+      prevPlayers.map(player =>
+        player._id === playerId
+          ? { ...player, state: player.state === "Add" ? "Remove" : "Add" }
+          : player
+      )
+    );
+  };
+
+  // Fetch players and user's team count
   useEffect(() => {
     setLoading(true);
 
-    axios.get("/backend")
+    axios.get(`/api/player/category-player`)
       .then((res) => {
         const fetchedPlayers = Array.isArray(res.data) ? res.data : [];
-        setPlayers([...hardcodedPlayers, ...fetchedPlayers]);
+        setPlayers((prevPlayers) => [...prevPlayers, ...fetchedPlayers]);
       })
       .catch(() => setPlayers(hardcodedPlayers));
 
-    axios.get(`/api/team/${userId}`)
+    axios.get(`/api/team/get-team-players`)
       .then((res) => {
-        setTeam([]); 
-        // setTeam(res.data);
-        setCounter(0);     //Add team.length
+        setTeamCount(res.data.teamPlayers?.length || 0);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [userId]);
 
+  // Add Player to Team
   const addToTeam = (player) => {
-    if (counter >= maxPlayers) return;
-    setCounter(counter+1)
-    axios.post(`/api/team/${userId}/add`, { playerId: player._id }).then(() => {
-      setTeam((team) => [...team, player]);
-    });
+    if (teamCount >= maxPlayers) return;
+
+    axios.post(`/api/team/add-team-players`, { playerID: player._id })
+      .then(() => {
+        toast.success("Player added to your team!");
+        setTeamCount((prev) => prev + 1); // Increase count
+      })
+      .catch((err) => {
+        toast.error(err.response?.data?.message || "Error adding player");
+      });
   };
 
-
+  // Remove Player from Team
   const removeFromTeam = (player) => {
-    axios.post(`/api/team/${userId}/remove`, { playerId: player._id }).then(() => {
-      setCounter(counter-1); // Ensure counter doesn't go below 0
-      //setTeam((prevTeam) => prevTeam.filter((p) => p._id !== player._id));
-    });
+    axios.post(`/api/team/remove-team-players`, { playerID: player._id })
+      .then(() => {
+        toast.info("Player removed from your team");
+        setTeamCount((prev) => Math.max(prev - 1, 0)); // Decrease count but not below 0
+      })
+      .catch((err) => {
+        toast.error(err.response?.data?.message || "Error removing player");
+      });
   };
-
-
 
   if (loading) return <div>Loading...</div>;
 
@@ -62,7 +82,7 @@ const CategoryPlayers = ({ userId }) => {
       <div style={styles.headerContainer}>
         <h2>Available Players</h2>
         <div style={styles.counter}>
-          {counter}/{maxPlayers}
+          {teamCount}/{maxPlayers}
         </div>
       </div>
       <div style={styles.cardsContainer}>
@@ -75,21 +95,16 @@ const CategoryPlayers = ({ userId }) => {
                 <p><strong>University:</strong> {player.university}</p>
                 <p><strong>Budget:</strong> ${player.budget}</p>
                 <button
-                  onClick={() => 
-                    team.some((p) => p._id === player._id) 
-                      ? removeFromTeam(player) 
-                      : addToTeam(player)
-                  }
+                  onClick={() => handleButtonClick(player._id)}
                   style={{
                     ...styles.addButton,
-                    backgroundColor: team.some((p) => p._id === player._id) ? "#f44336" : "#4CAF50",
-                    opacity: counter >= maxPlayers && !team.some((p) => p._id === player._id) ? 0.5 : 1,
-                    pointerEvents: counter >= maxPlayers && !team.some((p) => p._id === player._id) ? "none" : "auto",
+                    backgroundColor: player.state === "Add" ? "#4CAF50" : "#f44336", // Green for Add, Red for Remove
+                    opacity: player.state === "Add" && teamCount >= maxPlayers ? 0.5 : 1, // Only apply opacity for Add button
+                    pointerEvents: player.state === "Add" && teamCount >= maxPlayers ? "none" : "auto", // Only apply pointerEvents for Add button
                   }}
                 >
-                  {team.some((p) => p._id === player._id) ? "Remove" : "Add"}
+                  {player.state} {/* Display "Add" or "Remove" based on the player's state */}
                 </button>
-
               </div>
             </div>
           ))
