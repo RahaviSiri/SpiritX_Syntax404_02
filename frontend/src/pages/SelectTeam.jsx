@@ -15,18 +15,7 @@ const SelectTeam = () => {
       .catch((err) => console.error("Error fetching categories:", err));
   }, []);
 
-  const handleCategoryClick = (category) => {
-    if (category === "batsman") {
-      navigate("/batsman"); // Navigate to Batsman page
-    }
-    else if (category === "bowler") {
-      navigate("/bowler"); // Navigate to Batsman page
-    }
-    else if (category === "all-rounder") {
-      navigate("/all-rounder"); // Navigate to Batsman page
-    }
-    
-  };
+  const handleCategoryClick = (category) => { navigate("/category-players");};
 
   return (
     <div className="mt-6 p-6 min-h-screen bg-gray-100 flex flex-col items-center">
