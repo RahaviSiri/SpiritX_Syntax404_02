@@ -85,7 +85,7 @@ const deletePlayer = async (req,res) => {
   }
 }
 
-const updateHotel = async (req, res) => {
+const updatePlayer = async (req, res) => {
   try {
     const { id } = req.params;
     const { 
@@ -133,4 +133,4 @@ const updateHotel = async (req, res) => {
   }
 };
 
-export { addPlayer,getPlayers,getPlayerById, deletePlayer,updateHotel };
+export { addPlayer,getPlayers,getPlayerById, deletePlayer,updatePlayer };
