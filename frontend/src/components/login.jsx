@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [state, setState] = useState("Sign Up");
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ const Login = () => {
           name,
           userName,
           password,
-          phone,
         });
         if (data.success) {
           localStorage.setItem("uToken", data.token);
@@ -32,13 +30,11 @@ const Login = () => {
           setName("");
           setUserName("");
           setPassword("");
-          setPhone("");
         } else {
           toast.error(data.message);
           setName("");
           setUserName("");
           setPassword("");
-          setPhone("");
         }
       } else {
         const { data } = await axios.post(backendURL + "/api/user/login", {
@@ -118,22 +114,6 @@ const Login = () => {
                   className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label
-                  htmlFor="password"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Phone
-                </label>
-                <input
-                  id="phone"
-                  type="tell"
-                  required
-                  className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
             </div>

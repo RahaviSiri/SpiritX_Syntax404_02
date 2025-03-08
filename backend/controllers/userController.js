@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 
 const registerUser = async (req, res) => {
     try {
-        const { name, userName, password, phone } = req.body;
+        const { name, userName, password } = req.body;
 
         if (!userName || !password) {
             return res.json({ success: false, message: "Please enter details" });
@@ -26,7 +26,6 @@ const registerUser = async (req, res) => {
             name,
             userName,
             password: hashPassword,
-            phone
         };
 
         const newUser = new userModel(userData);
