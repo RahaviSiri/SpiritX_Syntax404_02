@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { assets } from "../assets/assets.js";  // Correct named import
+import { assets } from "../assets/assets.js";  
 
 const players = [
   {

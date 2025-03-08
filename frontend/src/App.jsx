@@ -11,9 +11,6 @@ import CategoryPlayers from './components/CategoryPlayers'
 import PlayersDetails from './components/PlayersDetails'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
-import Batsman from './pages/Batsman'
-import Bowler from './pages/Bowler'
-import All_rounder from './pages/All_rounder'
 import { UserContext } from './context/UserContext'
 import Login from './components/login';
 import { ToastContainer } from "react-toastify";
@@ -38,9 +35,6 @@ const App = () => {
         <Route path='/category-players' element={<CategoryPlayers/>}/>
         <Route path='/player-details' element={<PlayersDetails/>}/>
         <Route path='/selectteam' element={<SelectTeam />}></Route>
-        <Route path='/batsman' element={<Batsman />}></Route>
-        <Route path='/bowler' element={<Bowler />}></Route>
-        <Route path='/all-rounder' element={<All_rounder />}></Route>
       </Routes>
       <Footer/>
     </div>
