@@ -16,9 +16,14 @@ import Batsman from './pages/Batsman'
 import Bowler from './pages/Bowler'
 import All_rounder from './pages/All_rounder'
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+
 const App = () => {
   return (
     <div>
+      <ToastContainer />
       <NavBar/>
       <Routes>
         <Route path='/' element={<Home/>}/>

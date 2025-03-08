@@ -1,4 +1,5 @@
 import playerModel from "../models/playerModel.js";
+
 import {v2 as cloudinary} from "cloudinary"
 
 const addPlayer = async (req, res) => {
@@ -55,5 +56,23 @@ const getPlayers = async (req, res) => {
   }
 };
 
+// Function to get players based on category
+const getPlayersByCategory = async (req, res) => {
+  try {
+    const { category } = req.params; // Get the category from the URL parameter
 
-export { addPlayer,getPlayers };
+    // Query the database to find players with the specified category
+    const players = await playerModel.find({ category });
+
+    if (players.length === 0) {
+      return res.status(404).json({ success: false, message: `No players found for category: ${category}` });
+    }
+
+    // Send back the players matching the category
+    res.status(200).json({ success: true, players });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export { addPlayer,getPlayers, getPlayersByCategory };
