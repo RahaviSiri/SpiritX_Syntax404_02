@@ -1,6 +1,8 @@
 import playerModel from "../models/playerModel.js";
 import {v2 as cloudinary} from "cloudinary"
 
+import { calculatePointsAndBudget } from "./pointAndBudgetController.js";
+
 const addPlayer = async (req, res) => {
   try {
     const { 
@@ -148,4 +150,4 @@ const getPlayersByCategory = async (req, res) => {
   }
 };
 
-export { addPlayer,getPlayers,getPlayerById, deletePlayer,updatePlayer,getPlayersByCategory };
+export { addPlayer,getPlayers,getPlayerById, deletePlayer,updatePlayer,getPlayersByCategory, getPlayerDetails };
