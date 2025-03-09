@@ -4,6 +4,7 @@ import all_rounder from './all_rounder.jpg'
 import background from './bg.jpg'
 import icon from './icon..jpg'
 import cricketer from './cricketer.jpg'
+import ProfileBg from './ProfileBg.png'
 
 export const assets = {
     batsman,
@@ -11,6 +12,7 @@ export const assets = {
     all_rounder,
     background,
     icon,
-    cricketer
+    cricketer,
+    ProfileBg
 }
 
