@@ -15,6 +15,7 @@ import { UserContext } from './context/UserContext'
 import Login from './components/login';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Chatbot from "./components/Chatbot";
 
 
 const App = () => {
@@ -27,6 +28,7 @@ const App = () => {
       <NavBar/>
       <Routes>
         <Route path='/' element={<Home/>}/>
+        <Route path="/chatbot" element={<Chatbot />} />  {/* Chatbot Page */}
         <Route path='/players' element={<Players/>}/>
         <Route path='/select-team' element={<SelectTeam/>}/>
         <Route path='/my-team' element={<MyTeam/>}/>
