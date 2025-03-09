@@ -7,7 +7,7 @@ const PlayerCard = ({ item }) => {
 
   return (
     <div className="flex items-center justify-center flex-col bg-purple-300 text-white rounded-xl shadow-2xl flex-shrink-0 transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-3xl p-4 ">
-      <Link to={`/players-details/${_id}`}>
+      <Link to={`/player-details/${_id}`}>
         {/* Player Image */}
         <div className="flex justify-center mb-4">
           <img

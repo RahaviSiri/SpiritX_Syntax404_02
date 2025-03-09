@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Upload, X } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams, useNavigate } from "react-router-dom";
 
 const AddPlayer = () => {
+  const { id } = useParams(); 
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     name: "",
     university: "",
@@ -16,6 +20,36 @@ const AddPlayer = () => {
     runsConceded: "",
     image: null,
   });
+
+
+  // Fetch Player Details for Editing
+  useEffect(() => {
+    if (id) {
+      const fetchPlayer = async () => {
+        try {
+          const { data } = await axios.get(`http://localhost:4500/api/player/getPlayerbyId/${id}`);
+          if (data.success) {
+            setFormData({
+              name: data.player.name,
+              university: data.player.university,
+              category: data.player.category,
+              totalRuns: data.player.totalRuns,
+              ballsFaced: data.player.ballsFaced,
+              inningsPlayed: data.player.inningsPlayed,
+              wickets: data.player.wickets,
+              oversBowled: data.player.oversBowled,
+              runsConceded: data.player.runsConceded,
+              image: data.player.image, 
+            });
+          }
+        } catch (error) {
+          toast.error(`Error fetching player data: ${error.message}`);
+          console.error("Error fetching player data:", error.message);
+        }
+      };
+      fetchPlayer();
+    }
+  }, [id]);
 
   const inputHandler = (e) => {
     setFormData((prev) => ({
@@ -43,12 +77,12 @@ const AddPlayer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const formDataToSend = new FormData();
     formDataToSend.append("image", formData.image);
     formDataToSend.append("name", formData.name);
-    formDataToSend.append("university", formData.university); 
-    formDataToSend.append("category", formData.category); 
+    formDataToSend.append("university", formData.university);
+    formDataToSend.append("category", formData.category);
     formDataToSend.append("totalRuns", formData.totalRuns);
     formDataToSend.append("ballsFaced", formData.ballsFaced);
     formDataToSend.append("inningsPlayed", formData.inningsPlayed);
@@ -57,14 +91,21 @@ const AddPlayer = () => {
     formDataToSend.append("runsConceded", formData.runsConceded);
 
     try {
-      const { data } = await axios.post("http://localhost:4500/api/player/add", formDataToSend, {
-        headers: {
-          "Content-Type": "multipart/form-data", 
-          // Required for sending files
-        },
-      });
-      if(data.success){
-        toast.success(data.message);
+      let response;
+      if (id) {
+        // Update existing player
+        response = await axios.put(`http://localhost:4500/api/player/update/${id}`, formDataToSend, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        // Add new player
+        response = await axios.post("http://localhost:4500/api/player/add", formDataToSend, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
+      if (response.data.success) {
+        navigate("/players");
         setFormData({
           name: "",
           university: "",
@@ -77,18 +118,19 @@ const AddPlayer = () => {
           runsConceded: "",
           image: null,
         });
-      }else{
-        toast.error(data.message);
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.error("Error adding player", error); 
+      console.error("Error saving player:", error);
+      toast.error("Error saving player");
     }
   };
 
   return (
-    <div className="m-4 p-6 bg-white rounded-lg shadow-lg max-w-xl mx-auto w-full md:w-3/4 lg:w-1/2">
+    <div className="m-4 p-6 bg-white rounded-lg shadow-lg max-w-xl w-full">
       <h2 className="text-2xl font-bold text-purple-800 mb-6 text-center">
-        Add Player
+        {id ? "Edit Player" : "Add Player"}
       </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {/* Image Upload */}
@@ -96,7 +138,7 @@ const AddPlayer = () => {
           {formData.image ? (
             <div className="relative">
               <img
-                src={URL.createObjectURL(formData.image)}
+                src={formData.image instanceof File ? URL.createObjectURL(formData.image) : formData.image}
                 alt="Uploaded"
                 className="w-32 h-32 object-cover rounded-md border border-gray-300"
               />
@@ -152,7 +194,7 @@ const AddPlayer = () => {
           type="submit"
           className="w-full bg-purple-800 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition"
         >
-          Add Player
+          {id ? "Update Player" : "Add Player"}
         </button>
       </form>
     </div>

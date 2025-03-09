@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Routes,Route } from "react-router-dom"
 import Home from './pages/Home'
 import Players from './pages/Players'
@@ -11,14 +11,19 @@ import CategoryPlayers from './components/CategoryPlayers'
 import PlayersDetails from './components/PlayersDetails'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
+import { UserContext } from './context/UserContext'
+import Login from './components/login';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import Batsman from './pages/Batsman'
-import Bowler from './pages/Bowler'
-import All_rounder from './pages/All_rounder'
 
 const App = () => {
-  return (
+
+  const { uToken } = useContext(UserContext);
+
+  return uToken ? (
     <div>
+      <ToastContainer/>
       <NavBar/>
       <Routes>
         <Route path='/' element={<Home/>}/>
@@ -26,17 +31,20 @@ const App = () => {
         <Route path='/select-team' element={<SelectTeam/>}/>
         <Route path='/myteam' element={<MyTeam/>}/>
         <Route path='/budget' element={<Budget/>}/>
-        <Route path='/leader-board' element={<LeaderBoard/>}/>
+        <Route path='/leaderboard' element={<LeaderBoard/>}/>
         <Route path='/my-profile' element={<MyProfile/>}/>
-        <Route path='/category-players' element={<CategoryPlayers/>}/>
-        <Route path='/player-details' element={<PlayersDetails/>}/>
+        <Route path='/category-players/:category' element={<CategoryPlayers/>}/>
+        <Route path='/player-details/:id' element={<PlayersDetails/>}/>
         <Route path='/selectteam' element={<SelectTeam />}></Route>
-        <Route path='/batsman' element={<Batsman />}></Route>
-        <Route path='/bowler' element={<Bowler />}></Route>
-        <Route path='/all-rounder' element={<All_rounder />}></Route>
       </Routes>
       <Footer/>
     </div>
+  ) : (
+    <div>
+      <ToastContainer/>
+      <Login/>
+    </div>
+    
   )
 }
 

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { assets } from "../assets/assets.js"; // Import assets
+import { assets } from "../assets/assets.js";  
+
 
 const players = [
   {
