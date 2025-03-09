@@ -146,4 +146,13 @@ const checkPlayerInTeam = async (req, res) => {
   }
 };
 
-export { getTeamPlayers, addTeamPlayers, removeTeamPlayers,checkPlayerInTeam };
+const getTeams = async (req,res) => {
+  try {
+    const teams = await teamModel.find({});
+    return res.json({success:true,teams})
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+export { getTeamPlayers, addTeamPlayers, removeTeamPlayers,checkPlayerInTeam , getTeams};

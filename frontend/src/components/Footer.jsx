@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white p-10">
       {/* Footer Sections */}
-      <div className="max-w-screen-lg mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 text-left">
+      <div className="max-w-screen mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 text-left">
         {/* About Us Section */}
         <div>
           <h3 className="text-xl font-semibold mb-6">About Us</h3>

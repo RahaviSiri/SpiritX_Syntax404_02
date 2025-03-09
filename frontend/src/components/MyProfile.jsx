@@ -1,19 +1,48 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/assets.js";
+import { UserContext } from "@/context/UserContext.jsx";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function PersonalProfile() {
-  const user = {
-    username: "JohnDoe",
-    email: "johndoe@example.com",
-    contact: "+1234567890",
-    initialBudget: "$9,000,000",
+  const [user, setUser] = useState(null);
+  const { backendURL, uToken } = useContext(UserContext);
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get(`${backendURL}/api/user/get-user-data`, {
+        headers: {
+          Authorization: `Bearer ${uToken}`,
+        },
+      });
+      if (data.success) {
+        setUser(data.user);
+      } else {
+        toast.error("Error in fetching user");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, [uToken]);
+
+  if (!user) {
+    // Show a loading message or spinner while the user data is being fetched
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <section 
+    <section
       className="min-h-screen flex items-center justify-center bg-cover bg-center p-6"
       style={{
-        backgroundImage: `url(${assets.ProfileBg})`, // Replace with your actual image URL
+        backgroundImage: `url(${assets.ProfileBg})`, 
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -24,18 +53,15 @@ export default function PersonalProfile() {
         <div className="flex flex-col items-center text-center md:w-1/3 mb-6 md:mb-0">
           <div className="relative group">
             <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+              src={user.profilePicture || "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"} // Default profile picture if user doesn't have one
               alt="User Avatar"
               className="w-40 h-40 rounded-full border-4 border-purple-800 shadow-lg transition-transform duration-300 group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-black bg-opacity-20 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-              <span className="text-white font-semibold">Edit</span>
-            </div>
           </div>
           <h2 className="text-3xl font-bold text-purple-900 mt-4">
-            Hi, {user.username} 👋
+            Hi, {user.userName} 👋
           </h2>
-          <p className="text-gray-500 text-sm">Welcome back to MoraSpirit11!</p>
+          <p className="text-gray-500 text-sm mt-2">Welcome back to MoraSpirit11!</p>
         </div>
 
         {/* Right Section - User Info Grid */}
@@ -47,7 +73,7 @@ export default function PersonalProfile() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-gray-700">
             <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition">
               <h4 className="font-semibold text-purple-900">Username</h4>
-              <p className="text-gray-600">{user.username}</p>
+              <p className="text-gray-600">{user.userName}</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition">
               <h4 className="font-semibold text-purple-900">Email</h4>
@@ -63,7 +89,7 @@ export default function PersonalProfile() {
           <div className="mt-6 p-6 bg-purple-800 text-white rounded-xl shadow-md transition-all duration-500 hover:scale-105 hover:shadow-lg flex justify-between items-center">
             <div>
               <h4 className="text-lg font-semibold">Your Initial Budget 💸</h4>
-              <p className="text-2xl font-bold">{user.initialBudget}</p>
+              <p className="text-2xl font-bold mt-1">$ 9,000,000</p>
             </div>
             <span className="text-4xl">💰</span>
           </div>

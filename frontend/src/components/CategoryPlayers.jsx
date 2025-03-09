@@ -13,7 +13,9 @@ const CategoryPlayers = () => {
   const { category } = useParams();
   const [players, setPlayers] = useState([]);
   const { uToken } = useContext(UserContext);
+  const [budget, setBudget] = useState("");
 
+  //  get-player-points-and-budget
   const fetchPlayers = async () => {
     try {
       setLoading(true);
@@ -21,13 +23,36 @@ const CategoryPlayers = () => {
         `${backendURL}/api/player/category-player/${category}`
       );
       if (data.success) {
-        setPlayers(data.players);
+        const playersWithBudget = await Promise.all(
+          data.players.map(async (player) => {
+            const budget = await fetchBudget(player._id);
+            return { ...player, budget };
+          })
+        );
+        setPlayers(playersWithBudget);
       }
     } catch (error) {
       console.error("Error fetching data", error);
       setPlayers([]);
     } finally {
       setLoading(false);
+    }
+  };  
+
+  const fetchBudget = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `${backendURL}/api/budget/get-player-points-and-budget/${id}`
+      );
+      if (data.success) {
+        return data.playerBudget;
+      } else {
+        toast.error("Error fetching budget");
+        return "N/A";
+      }
+    } catch (error) {
+      toast.error(error.message);
+      return "N/A";
     }
   };
 
@@ -128,7 +153,7 @@ const CategoryPlayers = () => {
                   <strong>University:</strong> {player.university}
                 </p>
                 <p className="text-sm text-gray-600">
-                  <strong>Budget:</strong> ${player.budget}
+                <strong>Budget:</strong> $ {player.budget}
                 </p>
                 {/* Show the "Add" button only if there is space and the player is not in the team */}
                 {teamCount < maxPlayers && !playersInTeam[player._id] && (

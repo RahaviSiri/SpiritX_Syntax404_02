@@ -25,7 +25,7 @@ const UserContextProvider = ({ children }) => {
       });
       if(data.success){
         setTeam(data.teamPlayers);
-        console.log(data.teamPlayers)
+        // console.log(data.teamPlayers)
       }else{
         toast.error("Error in fetching team players")
       }
