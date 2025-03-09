@@ -5,6 +5,17 @@
 Welcome to **Spirit11**, the ultimate fantasy cricket league for university cricket fans! Developed for **SpiritX**, this project allows users to build dream teams, analyze statistics, and compete on the leaderboard using real university cricket players.
 
 ---
+## 🤝 Contributors
+👨‍💻 **Syntax_404**  
+Members - Rahavi Sirithar
+          Suwasthiga Nagendramoorthy
+          Parkkavi Sivakaran
+          Shaamma Sajahan
+          Arthikha Sooriyakumar
+            
+🎯 Developed for **SpiritX - MoraSpirit**  
+
+---
 
 ## 🚀 Features
 
@@ -49,27 +60,39 @@ Welcome to **Spirit11**, the ultimate fantasy cricket league for university cric
 ## 📌 Installation & Setup
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/spirit11.git
+git clone https://github.com/your-repo/spirit11.git](https://github.com/RahaviSiri/SpiritX_Syntax404_02.git
 
-# Navigate to the project folder
-cd spirit11
+Steps -
+# For frontend
+cd frontend
 
 # Install dependencies
-npm install
-
-# Start the backend server
-npm run server
+npm install axios react react-dom react-icons react-router-dom react-toastify
 
 # Start the frontend
-npm start
+npm run dev
+
+# For backend
+cd backend
+
+# Install dependencies
+npm install bcrypt cloudinary cors dotenv express jsonwebtoken mongoose multer nodemon validator
+
+# Start the backend server
+npm run dev
 ```
 
 ---
-
-## 🤝 Contributors
-👨‍💻 **Your Team Name**  
-🎯 Developed for **SpiritX - MoraSpirit**  
-
-📌 *Join the game, build your dream team, and dominate the leaderboard!* 🏏🔥
+Create an .env file in the backend folder and add the following data -
+  MONGO_URI=your_mongodb_connection_string
+  CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+  CLOUDINARY_API_KEY=your_cloudinary_api_key
+  CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+  ADMIN_EMAIL="spiritx@demo.com"
+  ADMIN_PASS="12345"
+  JWT_SECRET=your_jwt_secret_key
+  GEMINI_API_KEY=your_gemini_api_key
+  
+---
 
 
