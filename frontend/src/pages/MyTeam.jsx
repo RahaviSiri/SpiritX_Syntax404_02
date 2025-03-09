@@ -62,7 +62,7 @@ const MyTeam = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 min-h-screen">
       <h2 className="text-xl font-bold mb-4">Your Team</h2>
       
       <table className="border-collapse border w-full mt-4">

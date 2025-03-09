@@ -15,6 +15,7 @@ import { UserContext } from './context/UserContext'
 import Login from './components/login';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Chatbot from './components/Chatbot'
 
 
 const App = () => {
@@ -22,12 +23,13 @@ const App = () => {
   const { uToken } = useContext(UserContext);
 
   return uToken ? (
-    <div>
+    <div className=''>
       <ToastContainer/>
       <NavBar/>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/players' element={<Players/>}/>
+        <Route path='/chatbox' element={<Chatbot/>}/>
         <Route path='/select-team' element={<SelectTeam/>}/>
         <Route path='/my-team' element={<MyTeam/>}/>
         <Route path='/budget' element={<Budget/>}/>

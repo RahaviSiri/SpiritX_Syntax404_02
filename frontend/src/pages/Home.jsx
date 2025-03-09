@@ -1,28 +1,33 @@
 import { Link } from "react-router-dom";
-import { assets } from "../assets/assets.js";  
-
-
-const players = [
-  {
-    id: 1,
-    name: "John Doe",
-    university: "Harvard University",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    university: "Stanford University",
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    university: "MIT",
-  },
-];
+import { assets } from "../assets/assets.js";
+import { useContext, useState, useEffect } from "react";
+import { UserContext } from "@/context/UserContext.jsx";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function Home() {
+  const { backendURL } = useContext(UserContext);
+  const [players, setPlayers] = useState([]);
+
+  const getPlayers = async () => {
+    try {
+      const { data } = await axios.get(`${backendURL}/api/player/get-players`);
+      if (data.success) {
+        setPlayers(data.players.slice(0, 3)); 
+      } else {
+        toast.error("Error getting players");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getPlayers();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-white text-black relative">
       {/* Hero Section */}
       <header
         className="relative w-full h-[500px] bg-cover bg-center flex items-center justify-center text-white"
@@ -31,7 +36,6 @@ export default function Home() {
         }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
-
         <div className="relative z-10 text-center max-w-3xl p-6">
           <h1 className="text-2xl md:text-5xl font-serif">
             Welcome to MoraSpirit11!
@@ -53,34 +57,28 @@ export default function Home() {
         <h2 className="text-4xl font-semibold text-purple-700 mb-6">
           Featured Players
         </h2>
-
-        {/* Responsive Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {players.map((player) => (
             <div
               key={player.id}
-              className="bg-purple-400 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 flex flex-col items-center"
+              className="bg-purple-400 p-6 rounded-lg shadow-lg flex flex-col items-center"
             >
-              <div className="relative bg-white p-4 rounded-lg shadow-lg overflow-hidden w-full max-w-xs">
-                {/* Image */}
-                <div className="group relative w-full flex justify-center">
+              <div className="relative bg-white p-4 rounded-lg shadow-lg w-full max-w-xs">
+                <div className="w-full h-[200px] overflow-hidden flex justify-center">
                   <img
-                    src={assets.cricketer}
+                    src={player.image}
                     alt={player.name}
-                    className="w-full max-w-[200px] h-auto object-cover rounded-lg transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover rounded-lg"
                   />
-
-                  {/* Hover Details */}
-                  <div className="absolute inset-0 bg-black bg-opacity-60 text-white flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <h3 className="text-2xl font-bold">{player.name}</h3>
-                    <p className="text-lg mt-2">{player.university}</p>
-                  </div>
+                </div>
+                <div className="text-center mt-4">
+                  <h3 className="text-xl font-semibold">{player.name}</h3>
+                  <p className="text-lg mt-2">{player.university}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
         <div className="text-center mt-8">
           <Link
             to="/players"
@@ -99,11 +97,20 @@ export default function Home() {
         </p>
         <Link
           to="/select-team"
+          onClick={() => window.scrollTo(0, 0)}
           className="mt-4 inline-block bg-white text-purple-700 px-6 py-3 rounded-lg text-lg font-semibold shadow-md hover:bg-gray-200 transition"
         >
           Select Your Team
         </Link>
       </div>
+
+      {/* Fixed Spiriter Button */}
+      <Link
+        to="/chatbox"
+        className="fixed bottom-4 right-4 bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg text-lg font-semibold hover:bg-purple-700 transition"
+      >
+        Spiriter
+      </Link>
     </div>
   );
 }

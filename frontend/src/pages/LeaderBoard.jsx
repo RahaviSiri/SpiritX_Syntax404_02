@@ -113,6 +113,7 @@ const LeaderBoard = () => {
   }, [teams]);
 
   return (
+    <div className="min-h-screen ">
     <div className="w-full md:max-w-3xl mx-auto my-8 p-6 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-400 text-white rounded-xl shadow-lg">
       <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-6">🏆 Fantasy League Leaderboard</h2>
       <ul className="space-y-4">
@@ -126,6 +127,7 @@ const LeaderBoard = () => {
           </li>
         ))}
       </ul>
+    </div>
     </div>
   );
 };
