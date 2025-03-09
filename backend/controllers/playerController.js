@@ -133,4 +133,22 @@ const updatePlayer = async (req, res) => {
   }
 };
 
-export { addPlayer,getPlayers,getPlayerById, deletePlayer,updatePlayer };
+const getPlayersByCategory = async (req, res) => {
+  try {
+    const { category } = req.params; 
+
+    // Query the database to find players with the specified category
+    const players = await playerModel.find({ category });
+
+    if (!players || players.length === 0) {
+      return res.status(404).json({ success: false, message: `No players found for category: ${category}` });
+    }
+
+    // Send back the players matching the category
+    res.status(200).json({ success: true, players });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export { addPlayer,getPlayers,getPlayerById, deletePlayer,updatePlayer,getPlayersByCategory };
