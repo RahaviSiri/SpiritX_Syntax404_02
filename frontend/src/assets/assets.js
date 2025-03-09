@@ -10,6 +10,7 @@ import bat from "./bat.png";
 import ball from "./ball.webp"; 
 import all from "./all.jpg";
 import ProfileBg from './ProfileBg.png'
+import BudgetBg from './BudgetBg.png'
 
 
 export const assets = {
@@ -23,5 +24,6 @@ export const assets = {
     athlete,
     bat,
   ball,
-  all
+  all,
+  BudgetBg
 }

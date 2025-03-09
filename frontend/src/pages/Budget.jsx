@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { assets } from "../assets/assets.js";
+import { FaWallet, FaUser, FaUsers } from 'react-icons/fa';  // Importing icons from react-icons
 
 const INITIAL_BUDGET = 9000000;
 
@@ -12,8 +14,9 @@ const Budget = ({ userId }) => {
   ]);
 
   useEffect(() => {
-    axios.get(`/api/team/${userId}`)
-      .then((res) => {
+    axios
+      .get(`/api/team/${userId}`)
+      .then(() => {
         // If API data exists, use it; otherwise, fall back to the hardcoded team
         const teamData = team;
         // const teamData = res.data.length > 0 ? res.data : [];
@@ -32,53 +35,51 @@ const Budget = ({ userId }) => {
   }, [userId]);
 
   return (
-    <div style={styles.container}>
-      <h2>Budget Tracker</h2>
-      <div style={styles.budgetInfo}>
-        <p><strong>Total Budget:</strong> Rs. {INITIAL_BUDGET.toLocaleString()}</p>
-        <p><strong>Remaining Budget:</strong> Rs. {budget.toLocaleString()}</p>
-      </div>
+    <div className="h-screen bg-cover bg-center" style={{ backgroundImage: `url(${assets.BudgetBg})` }}>
+      <div className="max-w-4xl mx-auto p-6 mt-10 bg-white bg-opacity-80 rounded-2xl shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-purple-700 mb-6">
+          {/* <FaWallet className="inline-block mr-2 text-3xl" /> */}
+          Budget Tracker
+        </h2>
+        
+        <div className="bg-gray-100 p-6 rounded-lg mb-6">
+          <div className="flex justify-between items-center text-lg font-medium text-gray-700">
+            <div className="flex items-center">
+              <FaWallet className="mr-2 text-xl text-purple-700" />
+              <p><strong>Total Budget:</strong> Rs. {INITIAL_BUDGET.toLocaleString()}</p>
+            </div>
+            <div className="flex items-center">
+              <FaWallet className="mr-2 text-xl text-purple-700" />
+              <p><strong>Remaining Budget:</strong> Rs. {budget.toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
 
-      <h3>Your Team</h3>
-      {team.length > 0 ? (
-        <ul style={styles.teamList}>
-          {team.map((player) => (
-            <li key={player._id} style={styles.playerItem}>
-              <span>{player.name} - Rs. {player.budget.toLocaleString()}</span>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No players selected.</p>
-      )}
+        <h3 className="text-2xl font-semibold text-purple-600 mb-4">
+          <FaUsers className="inline-block mr-2 text-xl" />
+          Your Team
+        </h3>
+        {team.length > 0 ? (
+          <ul className="space-y-4">
+            {team.map((player) => (
+              <li
+                key={player._id}
+                className="flex justify-between items-center p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 hover:bg-purple-50"
+              >
+                <div className="flex items-center">
+                  <FaUser className="mr-2 text-purple-700" />
+                  <span className="text-lg font-medium text-gray-800">{player.name}</span>
+                </div>
+                <span className="text-lg font-medium text-purple-700">Rs. {player.budget.toLocaleString()}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-center text-lg text-gray-500">No players selected.</p>
+        )}
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: "20px",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    margin: "auto",
-    textAlign: "center"
-  },
-  budgetInfo: {
-    marginBottom: "20px"
-  },
-  teamList: {
-    listStyle: "none",
-    padding: 0
-  },
-  playerItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px",
-    borderBottom: "1px solid #ddd"
-  }
 };
 
 export default Budget;
