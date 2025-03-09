@@ -7,6 +7,7 @@ import playerRouter from "./routers/playerRouter.js";
 import adminRouter from "./routers/adminRouter.js";
 import userRouter from "./routers/userRouter.js";
 import teamRouter from "./routers/teamRouter.js";
+import pointAndBudgetRouter from "./routers/pointBudgetRouter.js";
 
 dotenv.config();
 
@@ -25,7 +26,8 @@ app.get("/", (req, res) => {
 app.use("/api/player", playerRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
-app.use("/api/team", teamRouter)
+app.use("/api/team", teamRouter);
+app.use("/api/budget", pointAndBudgetRouter);
 
 app.listen(PORT, () => {
     console.log(`Backend is working at port ${PORT}`);

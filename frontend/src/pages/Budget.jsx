@@ -1,84 +1,117 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { assets } from "../assets/assets.js";
+import { FaWallet, FaUser, FaUsers } from "react-icons/fa";
+import { UserContext } from "@/context/UserContext.jsx";
 
 const INITIAL_BUDGET = 9000000;
 
-const Budget = ({ userId }) => {
-  const [budget, setBudget] = useState(INITIAL_BUDGET);
-  const [team, setTeam] = useState([
-    { "_id": "player1", "name": "John Doe", "budget": 1500000 },
-    { "_id": "player2", "name": "Jane Smith", "budget": 1200000 },
-    { "_id": "player3", "name": "Alice Brown", "budget": 1000000 }
-  ]);
+const Budget = () => {
+  // const [budget, setBudget] = useState(INITIAL_BUDGET);
+  const [playerBudgets, setPlayerBudgets] = useState({});
+  const { fetchTeam, team, backendURL } = useContext(UserContext);
+
+  const fetchBudget = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `${backendURL}/api/budget/get-player-points-and-budget/${id}`
+      );
+      if (data.success) {
+        return data.playerBudget;
+      } else {
+        return 0;
+      }
+    } catch (error) {
+      return 0;
+    }
+  };
+
+  const fetchAllBudgets = async () => {
+    const budgets = {};
+    for (let player of team) {
+      budgets[player.playerId] = await fetchBudget(player.playerId);
+    }
+    setPlayerBudgets(budgets);
+  };
 
   useEffect(() => {
-    axios.get(`/api/team/${userId}`)
-      .then((res) => {
-        // If API data exists, use it; otherwise, fall back to the hardcoded team
-        const teamData = team;
-        // const teamData = res.data.length > 0 ? res.data : [];
-        setTeam(teamData);
+    fetchTeam();
+  }, []);
 
-        // Calculate the total spent budget
-        const totalSpent = teamData.reduce((sum, player) => sum + player.budget, 0);
-        setBudget(INITIAL_BUDGET - totalSpent);
-      })
-      .catch((error) => {
-        console.error(error);
-        // If API fails, retain hardcoded data and use it
-        const totalSpent = team.reduce((sum, player) => sum + player.budget, 0);
-        setBudget(INITIAL_BUDGET - totalSpent);
-      });
-  }, [userId]);
+  useEffect(() => {
+    if (team.length > 0) {
+      fetchAllBudgets();
+    }
+  }, [team]);
+
+  // Calculate remaining budget
+  const totalSpent = Object.values(playerBudgets).reduce(
+    (acc, curr) => acc + curr,
+    0
+  );
+  const remainingBudget = INITIAL_BUDGET - totalSpent;
 
   return (
-    <div style={styles.container}>
-      <h2>Budget Tracker</h2>
-      <div style={styles.budgetInfo}>
-        <p><strong>Total Budget:</strong> Rs. {INITIAL_BUDGET.toLocaleString()}</p>
-        <p><strong>Remaining Budget:</strong> Rs. {budget.toLocaleString()}</p>
-      </div>
+    <div
+      className="bg-cover bg-center"
+      style={{ backgroundImage: `url(${assets.BudgetBg})` }}
+    >
+      <div className="max-w-4xl mx-auto p-10 bg-opacity-80 rounded-2xl shadow-lg">
+        <h2 className="text-xl md:text-3xl font-bold text-center text-purple-200 mb-6">
+          Budget Tracker
+        </h2>
 
-      <h3>Your Team</h3>
-      {team.length > 0 ? (
-        <ul style={styles.teamList}>
-          {team.map((player) => (
-            <li key={player._id} style={styles.playerItem}>
-              <span>{player.name} - Rs. {player.budget.toLocaleString()}</span>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No players selected.</p>
-      )}
+        <div className="bg-gray-100 p-6 rounded-lg mb-6">
+          <div className="flex justify-between items-center text-lg font-medium text-gray-700">
+            <div className="flex items-center flex-col md:flex-row md:gap-3 justify-center gap-2">
+              <FaWallet className="text-2xl md:text-xl text-purple-700" />
+              <p className="text-sm md:text-md text-left">
+                <strong>Total Budget:</strong> <br /> Rs.{" "}
+                {INITIAL_BUDGET.toLocaleString()}
+              </p>
+            </div>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-3">
+              <FaWallet className="text-2xl md:text-xl text-purple-700" />
+              <p className="text-sm md:text-md text-left">
+                <strong>Remaining Budget:</strong> <br /> Rs.{" "}
+                {remainingBudget.toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h3 className="text-xl md:text-2xl font-semibold text-purple-200 mb-4">
+          <FaUsers className="inline-block mr-2" />
+          Your Team
+        </h3>
+
+        {team.length > 0 ? (
+          <ul className="space-y-4">
+            {team.map((player) => (
+              <li
+                key={player._id}
+                className="flex justify-between items-center p-4 bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 hover:bg-purple-50"
+              >
+                <div className="flex items-center">
+                  <FaUser className="mr-2 text-purple-700" />
+                  <span className="text-sm md:text-lg font-medium text-gray-800">
+                    {player.name}
+                  </span>
+                </div>
+                <span className=" text-sm md:text-lg font-medium text-purple-700">
+                  Rs. {playerBudgets[player.playerId]?.toLocaleString()}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-center text-lg text-gray-500">
+            No players selected.
+          </p>
+        )}
+      </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: "20px",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    maxWidth: "400px",
-    margin: "auto",
-    textAlign: "center"
-  },
-  budgetInfo: {
-    marginBottom: "20px"
-  },
-  teamList: {
-    listStyle: "none",
-    padding: 0
-  },
-  playerItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px",
-    borderBottom: "1px solid #ddd"
-  }
 };
 
 export default Budget;
