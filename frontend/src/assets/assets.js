@@ -17,7 +17,7 @@ export const assets = {
     icon,
     cricketer,
     athlete,
-  bat,
-  ball,
-  all,
+    bat,
+    ball,
+    all,
 }

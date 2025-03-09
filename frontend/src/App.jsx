@@ -29,7 +29,7 @@ const App = () => {
         <Route path='/' element={<Home/>}/>
         <Route path='/players' element={<Players/>}/>
         <Route path='/select-team' element={<SelectTeam/>}/>
-        <Route path='/myteam' element={<MyTeam/>}/>
+        <Route path='/my-team' element={<MyTeam/>}/>
         <Route path='/budget' element={<Budget/>}/>
         <Route path='/leaderboard' element={<LeaderBoard/>}/>
         <Route path='/my-profile' element={<MyProfile/>}/>
