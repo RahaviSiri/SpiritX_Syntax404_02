@@ -83,7 +83,8 @@ npm run dev
 ```
 
 ---
-Create an .env file in the backend folder and add the following data -
+## Create an .env file in the backend folder and add the following data -
+```bash
   MONGO_URI=your_mongodb_connection_string
   CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
   CLOUDINARY_API_KEY=your_cloudinary_api_key
@@ -92,7 +93,12 @@ Create an .env file in the backend folder and add the following data -
   ADMIN_PASS="12345"
   JWT_SECRET=your_jwt_secret_key
   GEMINI_API_KEY=your_gemini_api_key
+```
   
 ---
+## Authentication & Token Storage
 
+Upon successful login, store the authentication token (JWT) in local storage.
+
+---
 
