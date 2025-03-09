@@ -1,5 +1,6 @@
 import playerModel from "../models/playerModel.js";
 import teamModel from "../models/teamModel.js";
+import mongoose from "mongoose"
 
 const addTeamPlayers = async (req, res) => {
   try {
@@ -71,8 +72,10 @@ const getTeamPlayers = async (req, res) => {
 
     // Extract player details (name, budget) from the populated players
     const teamPlayers = team.players.map((player) => ({
+      playerId: player.playerId,      
       name: player.name,
       budget: player.budget,
+      university : player.university,
       _id: player._id,
     }));
 
@@ -84,24 +87,43 @@ const getTeamPlayers = async (req, res) => {
 
 const removeTeamPlayers = async (req, res) => {
   try {
-    const userId = req.body.userId;
-    const { playerID } = req.body;
+    const userId = req.body.userId;  
+    const { id } = req.body;
+    console.log(id)
+    console.log(userId)
 
-    if (!playerID) {
-      return res.status(400).json({ success: false, message: "Player ID is required" });
+    if (!id || !userId) {
+      return res.status(400).json({ success: false, message: "Player ID and User ID are required" });
     }
 
-    const team = await teamModel.findOneAndUpdate(
-      { userId },
-      { $pull: { players: { playerId: playerID } } }, // Remove by playerId
+    // Convert the id to an ObjectId for comparison
+    const playerObjectId = new mongoose.Types.ObjectId(id);
+
+    // Find the team by userId
+    const team = await teamModel.findOne({ userId });
+
+    if (!team) {
+      return res.status(404).json({ success: false, message: "Team not found" });
+    }
+
+    // Use $pull to remove the player by matching the playerId field as an ObjectId
+    const updatedTeam = await teamModel.findOneAndUpdate(
+      { userId, "players.playerId": playerObjectId },  
+      { $pull: { players: { playerId: playerObjectId } } },
       { new: true }
     );
 
-    res.status(200).json({ success: true, message: "Player removed from team", team });
+    if (!updatedTeam) {
+      return res.status(404).json({ success: false, message: "Failed to remove player from team" });
+    }
+
+    res.status(200).json({ success: true, message: "Player removed from team", team: updatedTeam });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 const checkPlayerInTeam = async (req, res) => {
   try {

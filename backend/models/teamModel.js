@@ -4,10 +4,10 @@ const teamSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     players: [
         {
-            playerId: { type: mongoose.Schema.Types.ObjectId, ref: "player", required: true }, // Reference to player
+            playerId: { type: mongoose.Schema.Types.ObjectId, ref: "player", required: true }, 
             name: { type: String, required: true },
-            budget: { type: Number, required: true },
-            university: { type: String }
+            budget: { type: Number },
+            university: { type: String , required: true}
         }
     ] 
 });
