@@ -69,7 +69,7 @@ const loginUser = async (req,res) => {
 // API to get user Data
 const getUserData = async (req, res) => {
     try {
-        const user = await userModel.findById(req.user.id).select("-password");
+        const user = await userModel.findById(req.body.userId).select("-password");
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
@@ -79,5 +79,22 @@ const getUserData = async (req, res) => {
     }
 };
 
+const getUserById = async (req, res) => {
+    try {
+      const userId = req.params.id;
+      console.log(`Fetching user with ID: ${userId}`); 
+      
+      const user = await userModel.findById(userId).select("-password");
+      if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+      }
+      res.json({ success: true, user });
+    } catch (error) {
+      console.error(`Error fetching user: ${error.message}`);  
+      return res.status(500).json({ success: false, message: error.message });
+    }
+};
+  
 
-export { registerUser, loginUser, getUserData }
+
+export { registerUser, loginUser, getUserData,getUserById }

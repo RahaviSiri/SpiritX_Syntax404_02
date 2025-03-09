@@ -1,29 +1,47 @@
 import { UserContext } from '@/context/UserContext';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import axios from "axios"
+import axios from "axios";
 
 const MyTeam = () => {
   const { team, fetchTeam, backendURL, uToken } = useContext(UserContext);
-  const totalPoints = 0;
+  const [totalPoints, setTotalPoints] = useState(0);
+
+  const fetchPoints = async (id) => {
+    try {
+      const { data } = await axios.get(
+        `${backendURL}/api/budget/get-player-points-and-budget/${id}`
+      );
+      return data.success ? data.playerPoints : 0;
+    } catch (error) {
+      return 0;
+    }
+  };
+
+  const fetchAllPoints = async () => {
+    let total = 0;
+
+    await Promise.all(
+      team.map(async (player) => {
+        const points = await fetchPoints(player.playerId);
+        total += points;
+      })
+    );
+    setTotalPoints(total);
+  };
 
   useEffect(() => {
     fetchTeam();
   }, []);
 
-  // Display a message if no team is available.
-  if (!team || team.length === 0) {
-    return (
-      <div className="p-6">
-        <h2 className="text-xl font-bold mb-4">Your Team</h2>
-        <p className="mt-4 text-red-500">No players found in your team.</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (team.length === 11) { 
+      fetchAllPoints();
+    }
+  }, [team]);
 
   const removePlayer = async (id) => {
     try {
-      console.log("Removing player with ID:", id);
       const { data } = await axios.post(
         `${backendURL}/api/team/remove-team-players`, 
         { id },
@@ -33,14 +51,12 @@ const MyTeam = () => {
           },
         }
       );
-      console.log("Remove response:", data); 
       if (data.success) {
         fetchTeam();
       } else {
         toast.error("Error in deleting");
       }
     } catch (error) {
-      console.log(error.message);
       toast.error(error.message);
     }
   };
@@ -49,7 +65,6 @@ const MyTeam = () => {
     <div className="p-6">
       <h2 className="text-xl font-bold mb-4">Your Team</h2>
       
-      {/* Displaying the team players in a table */}
       <table className="border-collapse border w-full mt-4">
         <thead>
           <tr className="bg-purple-200">
@@ -75,7 +90,13 @@ const MyTeam = () => {
           ))}
         </tbody>
       </table>
-      <p className="mt-6">Total Points of Team : {totalPoints}</p>
+
+      {/* Show total points only if the team has 1 player (for testing) */}
+      {team.length === 11 && (
+        <p className="mt-6 text-lg font-bold text-purple-700">
+          Total Points of Team: {totalPoints}
+        </p>
+      )}
     </div>
   );
 };
