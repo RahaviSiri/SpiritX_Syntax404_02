@@ -23,7 +23,8 @@ export const assets = {
     ProfileBg,
     athlete,
     bat,
-  ball,
-  all,
-  BudgetBg
+  BudgetBg,
+    ball,
+    all,
+
 }
