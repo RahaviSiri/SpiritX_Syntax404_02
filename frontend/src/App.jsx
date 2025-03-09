@@ -16,9 +16,6 @@ import Login from './components/login';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
 
 const App = () => {
 
@@ -36,7 +33,7 @@ const App = () => {
         <Route path='/budget' element={<Budget/>}/>
         <Route path='/leaderboard' element={<LeaderBoard/>}/>
         <Route path='/my-profile' element={<MyProfile/>}/>
-        <Route path='/category-players' element={<CategoryPlayers/>}/>
+        <Route path='/category-players/:category' element={<CategoryPlayers/>}/>
         <Route path='/player-details/:id' element={<PlayersDetails/>}/>
         <Route path='/selectteam' element={<SelectTeam />}></Route>
       </Routes>

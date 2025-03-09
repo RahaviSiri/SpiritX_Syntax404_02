@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { assets} from "../assets/assets.js";
-
+import { assets } from "../assets/assets.js";
 
 import { useNavigate } from "react-router-dom";
-import './SelectTeam.css'
+import "./SelectTeam.css";
 
 const SelectTeam = () => {
-  const [categories, setCategories] = useState([]);
-  const navigate = useNavigate(); 
-  useEffect(() => {
-    fetch("/api/categories") // Adjust the API endpoint as needed
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => console.error("Error fetching categories:", err));
-  }, []);
+  const navigate = useNavigate();
 
-  const handleCategoryClick = (category) => { navigate("/category-players");};
+  const handleCategoryClick = (category) => {
+    navigate(`/category-players/${category}`);
+  };
 
   return (
     <div className="mt-6 p-6 min-h-screen bg-gray-100 flex flex-col items-center">
@@ -28,7 +22,10 @@ const SelectTeam = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-4xl cursor-pointer">
         {/* Batsman Category */}
-        <div className="category-card flex flex-col items-center shadow-lg rounded-xl p-4 w-full h-64 relative group" onClick={() => handleCategoryClick("batsman")}>
+        <div
+          className="category-card flex flex-col items-center shadow-lg rounded-xl p-4 w-full h-64 relative group"
+          onClick={() => handleCategoryClick("Batsman")}
+        >
           <div className="flip-container w-full h-full">
             <div className="flip-card">
               <div className="flip-card-front w-full h-full flex flex-col justify-center items-center bg-purple-300 rounded-xl shadow-lg p-4">
@@ -41,8 +38,11 @@ const SelectTeam = () => {
               </div>
               <div className="flip-card-back w-full h-full flex justify-center items-center bg-purple-300 p-6 text-black rounded-xl shadow-lg">
                 <div>
-                  <p className="font-semibold">A batsman specializes in scoring runs by hitting the ball with precision. They play a key role in building partnerships and setting competitive totals.</p>
-                  
+                  <p className="font-semibold">
+                    A batsman specializes in scoring runs by hitting the ball
+                    with precision. They play a key role in building
+                    partnerships and setting competitive totals.
+                  </p>
                 </div>
               </div>
             </div>
@@ -50,7 +50,10 @@ const SelectTeam = () => {
         </div>
 
         {/* Bowler Category */}
-        <div className="category-card flex flex-col items-center bg-purple-300te shadow-lg rounded-xl p-4 w-full h-64 relative group" onClick={() => handleCategoryClick("bowler")}>
+        <div
+          className="category-card flex flex-col items-center bg-purple-300te shadow-lg rounded-xl p-4 w-full h-64 relative group"
+          onClick={() => handleCategoryClick("Bowler")}
+        >
           <div className="flip-container w-full h-full">
             <div className="flip-card">
               <div className="flip-card-front w-full h-full flex flex-col justify-center items-center bg-purple-300 rounded-xl shadow-lg p-4">
@@ -63,8 +66,11 @@ const SelectTeam = () => {
               </div>
               <div className="flip-card-back w-full h-full flex justify-center items-center bg-purple-300 p-6 text-black rounded-xl shadow-lg">
                 <div>
-                  <p className="font-semibold">A bowler’s job is to dismiss the batsman through varied deliveries. They aim to control the game and create opportunities for the team to take wickets.</p>
-                  
+                  <p className="font-semibold">
+                    A bowler’s job is to dismiss the batsman through varied
+                    deliveries. They aim to control the game and create
+                    opportunities for the team to take wickets.
+                  </p>
                 </div>
               </div>
             </div>
@@ -72,7 +78,10 @@ const SelectTeam = () => {
         </div>
 
         {/* All-rounder Category */}
-        <div className="category-card flex flex-col items-center  shadow-lg rounded-xl p-4 w-full h-64 relative group" onClick={() => handleCategoryClick("all-rounder")}>
+        <div
+          className="category-card flex flex-col items-center  shadow-lg rounded-xl p-4 w-full h-64 relative group"
+          onClick={() => handleCategoryClick("All-Rounder")}
+        >
           <div className="flip-container w-full h-full rounded-full">
             <div className="flip-card">
               <div className="flip-card-front w-full h-full flex flex-col justify-center items-center bg-purple-300 rounded-xl shadow-lg p-4 ">
@@ -85,8 +94,11 @@ const SelectTeam = () => {
               </div>
               <div className="flip-card-back w-full h-full flex justify-center items-center bg-purple-300 text-white p-6 rounded-xl shadow-lg">
                 <div>
-                  <p className="font-semibold">An all-rounder excels in both batting and bowling, offering flexibility to the team. They provide balance and contribute in all aspects of the game.</p>
-                  
+                  <p className="font-semibold">
+                    An all-rounder excels in both batting and bowling, offering
+                    flexibility to the team. They provide balance and contribute
+                    in all aspects of the game.
+                  </p>
                 </div>
               </div>
             </div>

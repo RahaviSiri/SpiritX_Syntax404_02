@@ -1,8 +1,15 @@
 import mongoose from "mongoose";
 
 const teamSchema = new mongoose.Schema({
-    userName: { type: String, required: true },
-    players: [{ type: mongoose.Schema.Types.ObjectId, ref: "player" }] // Reference to players
+    userId: { type: String, required: true },
+    players: [
+        {
+            playerId: { type: mongoose.Schema.Types.ObjectId, ref: "player", required: true }, // Reference to player
+            name: { type: String, required: true },
+            budget: { type: Number, required: true },
+            university: { type: String }
+        }
+    ] 
 });
 
 const teamModel = mongoose.models.team || mongoose.model("team", teamSchema);
