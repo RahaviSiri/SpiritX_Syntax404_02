@@ -19,7 +19,6 @@ const AddPlayer = () => {
     oversBowled: "",
     runsConceded: "",
     image: null,
-    budget: "",
   });
 
 
@@ -40,7 +39,6 @@ const AddPlayer = () => {
               wickets: data.player.wickets,
               oversBowled: data.player.oversBowled,
               runsConceded: data.player.runsConceded,
-              budget: data.player.budget,
               image: data.player.image, 
             });
           }
@@ -91,7 +89,6 @@ const AddPlayer = () => {
     formDataToSend.append("wickets", formData.wickets);
     formDataToSend.append("oversBowled", formData.oversBowled);
     formDataToSend.append("runsConceded", formData.runsConceded);
-    formDataToSend.append("budget", formData.budget);
 
     try {
       let response;
@@ -120,7 +117,6 @@ const AddPlayer = () => {
           oversBowled: "",
           runsConceded: "",
           image: null,
-          budget: "",
         });
       } else {
         toast.error(response.data.message);
@@ -180,7 +176,6 @@ const AddPlayer = () => {
           { name: "wickets", placeholder: "Wickets", type: "number" },
           { name: "oversBowled", placeholder: "Overs Bowled", type: "number" },
           { name: "runsConceded", placeholder: "Runs Conceded", type: "number" },
-          { name: "budget", placeholder: "Budget of Player", type: "number" }
         ].map((field) => (
           <input
             key={field.name}

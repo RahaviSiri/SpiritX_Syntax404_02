@@ -13,7 +13,6 @@ const addPlayer = async (req, res) => {
       wickets, 
       oversBowled, 
       runsConceded,
-      budget 
     } = req.body;
     
     const imageFile = req.file;
@@ -37,8 +36,7 @@ const addPlayer = async (req, res) => {
       wickets,
       oversBowled,
       runsConceded,
-      image: imageUpload.secure_url,
-      budget
+      image: imageUpload.secure_url
     });
 
     await player.save();
@@ -98,7 +96,6 @@ const updatePlayer = async (req, res) => {
       wickets, 
       oversBowled, 
       runsConceded,
-      budget 
     } = req.body;
     let updateFields = { name, 
       university, 
@@ -109,7 +106,7 @@ const updatePlayer = async (req, res) => {
       wickets, 
       oversBowled, 
       runsConceded,
-      budget  };
+      };
 
     // If a new image is uploaded, update it
     if (req.file) {
